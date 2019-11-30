@@ -1,8 +1,17 @@
 // 封装axios请求模块
 import axios from 'axios'
+import jsonBig from 'json-bigint'
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn'
 })
+// 配置处理后端返回数据中心超出就是安全整数范围问题
+request.defaults.transformResponse = [function (data) {
+  try {
+    return jsonBig.parse(data)
+  } catch (err) {
+    return {}
+  }
+}]
 // 请求拦截器
 request.interceptors.request.use(
   function (config) {
