@@ -13,7 +13,9 @@
         placeholder="请输入验证码"  />
     </van-cell-group>
     <!-- 登录按钮 -->
-    <van-button type="info">登录</van-button>
+    <div class="login-box">
+      <van-button type="info">登录</van-button>
+    </div>
   </div>
 </template>
 
@@ -28,5 +30,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="less">
+  .login{
+    .login-box{
+      padding: 20px;
+      .van-button{
+        width: 100%;
+      }
+    }
+  }
 </style>
