@@ -22,7 +22,10 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+// 按需加载 `export` 成员  用{}括起来
+// import { 成员1 as 别名, 成员2... } from '模块路径'
+import { login } from '@/api/user'
+// import request from '@/utils/request'
 export default {
   name: 'LoginPage',
   components: {},
@@ -44,11 +47,11 @@ export default {
         duration: 0 // 持续展示
       })
       try {
-        const res = await request({
-          method: 'post',
-          url: '/app/v1_0/authorizations',
-          data: this.user
-        })
+        const res = await login(this.user)
+        // method: 'post',
+        // url: '/app/v1_0/authorizations',
+        // data: this.user
+
         console.log('登陆成功', res)
         this.$toast.success('登陆成功')
       } catch (err) {
