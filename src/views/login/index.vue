@@ -37,6 +37,12 @@ export default {
   },
   methods: {
     async onLogin () {
+      this.$toast.loading({
+        message: '登陆中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0 // 持续展示
+      })
       try {
         const res = await request({
           method: 'post',
@@ -44,8 +50,10 @@ export default {
           data: this.user
         })
         console.log('登陆成功', res)
+        this.$toast.success('登陆成功')
       } catch (err) {
         console.log('登录失败', err)
+        this.$toast.fail('登陆失败,手机号或验证码输入不正确')
       }
     }
   }
