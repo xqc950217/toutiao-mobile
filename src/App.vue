@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view />
+    <van-button type="info">信息按钮</van-button>
   </div>
 </template>
 
