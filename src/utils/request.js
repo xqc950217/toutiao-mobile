@@ -1,6 +1,8 @@
 // 封装axios请求模块
 import axios from 'axios'
 import jsonBig from 'json-bigint'
+// 在非组件模块中访问容器,直接import加载
+import store from '@/store'
 // axios.create 方法：复制一个 axios  request随便写
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn'
@@ -17,6 +19,10 @@ request.defaults.transformResponse = [function (data) {
 request.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    const user = store.state.user
+    if (user) {
+      config.headers.Authorization = `Bearer ${user.token}`
+    }
     return config
   },
   function (error) {
