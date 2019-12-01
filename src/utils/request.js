@@ -1,6 +1,7 @@
 // 封装axios请求模块
 import axios from 'axios'
 import jsonBig from 'json-bigint'
+// axios.create 方法：复制一个 axios  request随便写
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn'
 })

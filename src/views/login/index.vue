@@ -33,8 +33,8 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       }
     }
   },
@@ -51,8 +51,8 @@ export default {
         // method: 'post',
         // url: '/app/v1_0/authorizations',
         // data: this.user
-
-        console.log('登陆成功', res)
+        // res.data.data=>{token:"xxx",refresh_token:"xxx"}
+        this.$store.commit('setUser', res.data.data)
         this.$toast.success('登陆成功')
       } catch (err) {
         console.log('登录失败', err)
