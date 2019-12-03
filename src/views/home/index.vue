@@ -44,6 +44,7 @@
       </div>
     </van-tabs>
     <!-- 频道管理弹窗 -->
+    <!-- open 事件 打开弹出层时触发-->
     <van-popup
       v-model="isChannelShow"
       position="bottom"
@@ -51,6 +52,7 @@
       closeable
       close-icon-position="top-left"
       :style="{ height: '95%' }"
+      @open="onChannelOpen"
     >
     <div class="channel-container">
       <van-cell-group>
@@ -81,6 +83,7 @@
 <script>
 import { getUserChannels } from '@/api/user'
 import { getArticles } from '@/api/article'
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'HomePage',
   components: {},
@@ -91,7 +94,8 @@ export default {
       loading: false,
       isLoading: false,
       channels: [],
-      isChannelShow: false
+      isChannelShow: false,
+      allChannels: [] // 所有频道列表
     }
   },
   computed: {},
@@ -158,6 +162,11 @@ export default {
         channel.timestamp = null // 用于获取下一页数据的时间戳
       })
       this.channels = channels
+    },
+    async onChannelOpen () {
+      const res = await getAllChannels()
+      this.allChannels = res.data.data.channels
+      // console.log(this.allChannels)
     }
   }
 }
