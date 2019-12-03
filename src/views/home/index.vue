@@ -69,9 +69,9 @@
         <van-cell title="推荐频道" :border="false" />
         <van-grid :gutter="10">
           <van-grid-item
-            v-for="value in 8"
-            :key="value"
-            text="文字"
+            v-for="channel in recommendChannels"
+            :key="channel.id"
+            :text="channel.name"
           />
         </van-grid>
       </van-cell-group>
@@ -98,7 +98,22 @@ export default {
       allChannels: [] // 所有频道列表
     }
   },
-  computed: {},
+  computed: {
+    // 封装一个**计算属性**用来获取剩余频道
+    recommendChannels () {
+      const arr = []
+      // 遍历所有频道
+      this.allChannels.forEach(channel => {
+        const ret = this.channels.find(item => {
+          return item.id === channel.id
+        })
+        if (!ret) {
+          arr.push(channel)
+        }
+      })
+      return arr
+    }
+  },
   watch: {},
   created () {
     this.loadUserChannels()
