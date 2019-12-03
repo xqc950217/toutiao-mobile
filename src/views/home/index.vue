@@ -38,6 +38,10 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
+      <!-- 面包按钮 -->
+      <div slot="nav-right" class="wap-nav" @click="isChannelShow=true">
+        <van-icon name="wap-nav" size="24"/>
+      </div>
     </van-tabs>
     <!-- 频道管理弹窗 -->
     <van-popup
@@ -64,7 +68,7 @@ export default {
       loading: false,
       isLoading: false,
       channels: [],
-      isChannelShow: true
+      isChannelShow: false
     }
   },
   computed: {},
@@ -152,6 +156,13 @@ export default {
       /deep/.van-tabs__content {
         margin-top: 90px;
       }
+    }
+    .wap-nav{
+      position: sticky;
+      right: 0;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
     }
   }
 </style>
