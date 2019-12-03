@@ -39,6 +39,15 @@
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
+    <!-- 频道管理弹窗 -->
+    <van-popup
+      v-model="isChannelShow"
+      position="bottom"
+      round
+      closeable
+      close-icon-position="top-left"
+      :style="{ height: '95%' }"
+    />
   </div>
 </template>
 
@@ -54,7 +63,8 @@ export default {
       active: 0,
       loading: false,
       isLoading: false,
-      channels: []
+      channels: [],
+      isChannelShow: true
     }
   },
   computed: {},
