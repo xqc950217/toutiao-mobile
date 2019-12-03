@@ -24,7 +24,8 @@
             <div slot="label">
               <van-grid :border="false" :column-num="3">
                 <van-grid-item v-for="(img,index) in article.cover.images" :key="index">
-                  <van-image :src="img" height="80"/>
+                  <van-image :src="img" height="80" lazy-load/>
+                  <!-- 图片懒加载 -->
                 </van-grid-item>
               </van-grid>
               <div class="article-info">
