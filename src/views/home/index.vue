@@ -51,7 +51,30 @@
       closeable
       close-icon-position="top-left"
       :style="{ height: '95%' }"
-    />
+    >
+    <div class="channel-container">
+      <van-cell-group>
+        <van-cell title="我的频道" :border="false" >
+        <van-button type="danger" size="mini">编辑</van-button>
+        </van-cell>
+        <van-grid :gutter="10">
+          <van-grid-item
+            v-for="value in 8"
+            :key="value"
+            text="文字"
+          />
+        </van-grid>
+        <van-cell title="推荐频道" :border="false" />
+        <van-grid :gutter="10">
+          <van-grid-item
+            v-for="value in 8"
+            :key="value"
+            text="文字"
+          />
+        </van-grid>
+      </van-cell-group>
+    </div>
+    </van-popup>
   </div>
 </template>
 
@@ -163,6 +186,9 @@ export default {
       display: flex;
       align-items: center;
       background-color: #fff;
+    }
+    .channel-container{
+      padding-top: 30px;
     }
   }
 </style>
