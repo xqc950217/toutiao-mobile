@@ -72,6 +72,7 @@
             v-for="channel in recommendChannels"
             :key="channel.id"
             :text="channel.name"
+            @click="onChannelAdd(channel)"
           />
         </van-grid>
       </van-cell-group>
@@ -182,6 +183,10 @@ export default {
       const res = await getAllChannels()
       this.allChannels = res.data.data.channels
       // console.log(this.allChannels)
+    },
+    onChannelAdd (channel) {
+      // 讲点击的频道项添加到我的频道列表中
+      this.channels.push(channel)
     }
   }
 }
