@@ -68,15 +68,16 @@
             v-for="(channel, index) in channels"
             :key="channel.id"
             :text="channel.name"
-            @click="onChannelActiveOrDelete(index)"
+            @click="onChannelActiveOrDelete(channel,index)"
           >
           <van-icon
           name="close"
           slot="icon"
           size="20"
           class="close-icon"
-          v-show="isEdit"
+          v-show="isEdit&&channel.name!=='推荐'"
           />
+          <!-- 不给推荐频道展示编辑状态的删除按钮 -->
           </van-grid-item>
         </van-grid>
         <van-cell title="推荐频道" :border="false" />
@@ -203,8 +204,8 @@ export default {
       this.channels.push(channel)
     },
     onChannelActiveOrDelete (channel, index) {
-      if (this.isEdit) {
-        // 编辑状态 执行删除频道
+      if (this.isEdit && channel.name !== '推荐') {
+        // 编辑状态 执行删除频道   不删除推荐频道
         // 拿到点击项的索引,调用splice方法删除
         this.channels.splice(index, 1)
       } else {
