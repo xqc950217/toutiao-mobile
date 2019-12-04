@@ -99,6 +99,7 @@
 import { getUserChannels } from '@/api/user'
 import { getArticles } from '@/api/article'
 import { getAllChannels } from '@/api/channel'
+import { getItem, setItem } from '@/utils/storage'
 export default {
   name: 'HomePage',
   components: {},
@@ -130,7 +131,11 @@ export default {
       return arr
     }
   },
-  watch: {},
+  watch: {
+    channels () {
+      setItem('channels', this.channels)
+    }
+  },
   created () {
     this.loadUserChannels()
   },
@@ -184,19 +189,34 @@ export default {
       this.$toast(message)
     },
     async loadUserChannels () {
-      const res = await getUserChannels()
-      const channels = res.data.data.channels
-      // 给每个频道添加自定义数据:文章列表,finished结束状态
-      channels.forEach(channel => {
-        channel.articles = [] // 频道文章列表
-        channel.finished = false // 频道加载结束状态
-        channel.timestamp = null // 用于获取下一页数据的时间戳
-      })
+      let channels = []
+      const localChannels = getItem('channels')
+      // 如果有本地存储的频道列表，则获取使用
+      if (localChannels) {
+        channels = localChannels
+      } else {
+        // 如果没有，则请求获取线上推荐的频道列表
+        const res = await getUserChannels()
+        const onLineChannels = res.data.data.channels
+        onLineChannels.forEach(channel => {
+          channel.articles = [] // 频道的文章列表
+          channel.finished = false // 频道的加载结束状态
+          channel.timestamp = null // 用于获取频道下一页数据的时间戳
+        })
+        channels = onLineChannels
+      }
+
       this.channels = channels
     },
     async onChannelOpen () {
       const res = await getAllChannels()
-      this.allChannels = res.data.data.channels
+      const allChannels = res.data.data.channels
+      allChannels.forEach(channel => {
+        channel.articles = [] // 频道文章列表
+        channel.finished = false // 频道加载结束状态
+        channel.timestamp = null // 用于获取下一页数据的时间戳
+      })
+      this.allChannels = allChannels
       // console.log(this.allChannels)
     },
     onChannelAdd (channel) {
@@ -205,7 +225,7 @@ export default {
     },
     onChannelActiveOrDelete (channel, index) {
       if (this.isEdit && channel.name !== '推荐') {
-        // 编辑状态 执行删除频道   不删除推荐频道
+        // 编辑状态 执行删除频道
         // 拿到点击项的索引,调用splice方法删除
         this.channels.splice(index, 1)
       } else {
