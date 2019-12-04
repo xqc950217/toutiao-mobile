@@ -65,9 +65,10 @@
         </van-cell>
         <van-grid :gutter="10">
           <van-grid-item
-            v-for="channel in channels"
+            v-for="(channel, index) in channels"
             :key="channel.id"
             :text="channel.name"
+            @click="onChannelActiveOrDelete(index)"
           >
           <van-icon
           name="close"
@@ -200,6 +201,18 @@ export default {
     onChannelAdd (channel) {
       // 讲点击的频道项添加到我的频道列表中
       this.channels.push(channel)
+    },
+    onChannelActiveOrDelete (channel, index) {
+      if (this.isEdit) {
+        // 编辑状态 执行删除频道
+        // 拿到点击项的索引,调用splice方法删除
+        this.channels.splice(index, 1)
+      } else {
+        // 非编辑状态,执行切换频道
+        // 关闭弹窗 拿到点击项的索引值,赋值给active数据
+        this.active = index
+        this.isChannelShow = false
+      }
     }
   }
 }
