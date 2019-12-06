@@ -34,10 +34,12 @@
          <span>完成</span>
          <van-icon name="delete" />
        </van-cell>
-       <van-cell title="单元格">
-         <van-icon name="close" />
-       </van-cell>
-       <van-cell title="单元格">
+       <van-cell
+         :title="item"
+         :key="item"
+         v-for="item in searchHistories"
+         @click="onSearch(item)"
+       >
          <van-icon name="close" />
        </van-cell>
      </van-cell-group>
@@ -47,6 +49,7 @@
 
 <script>
 import { getSuggestions } from '@/api/search'
+import { setItem, getItem } from '@/utils/storage'
 export default {
   name: 'SearchPage',
   components: {},
@@ -54,7 +57,8 @@ export default {
   data () {
     return {
       searchText: '', // 用户输入的搜索文本
-      suggestions: [] // 搜索联想建议列表
+      suggestions: [], // 搜索联想建议列表
+      searchHistories: getItem('search-histories') || []
     }
   },
   computed: {},
@@ -65,6 +69,20 @@ export default {
     // 搜索处理函数
     // 点击搜索按钮并且给搜索结果注册点击事件 点击两个都可以跳转
     onSearch (q) {
+      if (!q.trim()) {
+        return
+      }
+      // 跳转前将搜索的关键字记录到搜索历史中
+      // indexOf() 方法可返回某个指定的字符串值在字符串中首次出现的位置。
+      // 如果要检索的字符串值没有出现，则该方法返回 -1。
+      const index = this.searchHistories.indexOf(q)
+      if (index !== -1) {
+        this.searchHistories.splice(index, 1)
+      }
+      // 最新的排在最前面
+      this.searchHistories.unshift(q)
+      // 将搜索历史记录到本地存储
+      setItem('search-histories', this.searchHistories)
       this.$router.push(`/search/${q}`)
     },
     async onSearchInput () {
