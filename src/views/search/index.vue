@@ -16,11 +16,13 @@
     <!-- 联想建议 -->
     <van-cell-group>
       <van-cell
-        :title="item"
         icon="search"
         :key="item"
         v-for="item in suggestions"
-      />
+      >
+      <!-- 把item 处理成带有高亮的字符串 -->
+      <div slot="title" v-html="highlight(item)"></div>
+      </van-cell>
     </van-cell-group>
     <!-- /联想建议 -->
 
@@ -69,6 +71,13 @@ export default {
       }
       const res = await getSuggestions(this.searchText)
       this.suggestions = res.data.data.options
+    },
+    // 高亮处理
+    highlight (str) {
+      // 动态创建正则表达式 使用new RegExp手动构造
+      // g 全局，i 忽略大小写
+      const reg = new RegExp(this.searchText, 'ig')
+      return str.replace(reg, `<span style="color:red">${this.searchText}</span>`)
     }
   }
 }
