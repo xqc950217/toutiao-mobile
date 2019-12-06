@@ -9,7 +9,7 @@
       @search="onSearch"
       @input="onSearchInput"
     >
-      <div slot="action" @click="onSearch">搜索</div>
+      <div slot="action" @click="onSearch(searchText)">搜索</div>
     </van-search>
     <!-- /搜索框 -->
 
@@ -19,6 +19,7 @@
         icon="search"
         :key="item"
         v-for="item in suggestions"
+        @click="onSearch(item)"
       >
       <!-- 把item 处理成带有高亮的字符串 -->
       <div slot="title" v-html="highlight(item)"></div>
@@ -62,7 +63,10 @@ export default {
   created () {},
   methods: {
     // 搜索处理函数
-    onSearch () {},
+    // 点击搜索按钮并且给搜索结果注册点击事件 点击两个都可以跳转
+    onSearch (q) {
+      this.$router.push(`/search/${q}`)
+    },
     async onSearchInput () {
       const searchText = this.searchText.trim()
       if (!searchText) {
