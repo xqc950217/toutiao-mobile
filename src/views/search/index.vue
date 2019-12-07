@@ -30,9 +30,15 @@
      <!-- 搜索历史记录 -->
      <van-cell-group>
        <van-cell title="历史记录">
-         <span>全部删除</span>&nbsp;&nbsp;
-         <span>完成</span>
-         <van-icon name="delete" />
+         <div v-show="isDeleteShow">
+            <span>全部删除</span>&nbsp;&nbsp;
+            <span @click="isDeleteShow=false">完成</span>
+         </div>
+         <van-icon
+           name="delete"
+           @click="isDeleteShow=true"
+           v-show="!isDeleteShow"
+         />
        </van-cell>
        <van-cell
          :title="item"
@@ -40,7 +46,10 @@
          v-for="item in searchHistories"
          @click="onSearch(item)"
        >
-         <van-icon name="close" />
+         <van-icon
+           name="close"
+           v-show="!isDeleteShow"
+         />
        </van-cell>
      </van-cell-group>
      <!-- /搜索历史记录 -->
@@ -58,7 +67,8 @@ export default {
     return {
       searchText: '', // 用户输入的搜索文本
       suggestions: [], // 搜索联想建议列表
-      searchHistories: getItem('search-histories') || []
+      searchHistories: getItem('search-histories') || [],
+      isDeleteShow: false // 控制删除历史显示状态
     }
   },
   computed: {},
