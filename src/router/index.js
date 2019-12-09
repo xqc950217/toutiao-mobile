@@ -10,6 +10,7 @@ Vue.use(VueRouter)
 // 配置路由表
 const routes = [
   {
+    name: 'login',
     path: '/login',
     component: Login
   },
@@ -18,20 +19,24 @@ const routes = [
     component: Tabbar,
     children: [
       {
+        name: 'home',
         path: '',
         component: Home
       }
     ]
   },
   {
+    name: 'search',
     path: '/search',
     component: Search
   },
   {
+    name: 'search-result',
     path: '/search/:q',
     component: SearchResult
   },
   {
+    name: 'article',
     path: '/article/:articleId',
     component: Article
   }
