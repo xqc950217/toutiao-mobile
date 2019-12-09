@@ -43,13 +43,13 @@
        <van-cell
          :title="item"
          :key="item"
-         v-for="item in searchHistories"
+         v-for="(item, index) in searchHistories"
          @click="onSearch(item)"
        >
          <van-icon
            name="close"
            v-show="!isDeleteShow"
-           @click.stop="searchHistories.splice(index,1)"
+           @click.stop="searchHistories.splice(index, 1)"
          />
        </van-cell>
      </van-cell-group>
@@ -60,6 +60,7 @@
 <script>
 import { getSuggestions } from '@/api/search'
 import { setItem, getItem } from '@/utils/storage'
+import { debounce } from 'lodash'
 export default {
   name: 'SearchPage',
   components: {},
@@ -99,7 +100,7 @@ export default {
       setItem('search-histories', this.searchHistories)
       this.$router.push(`/search/${q}`)
     },
-    async onSearchInput () {
+    onSearchInput: debounce(async function () {
       const searchText = this.searchText.trim()
       if (!searchText) {
         // 非空校验
@@ -107,7 +108,7 @@ export default {
       }
       const res = await getSuggestions(this.searchText)
       this.suggestions = res.data.data.options
-    },
+    }, 300),
     // 高亮处理
     highlight (str) {
       // 动态创建正则表达式 使用new RegExp手动构造
